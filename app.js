@@ -11,7 +11,7 @@ require("dotenv").config;
 require("./config/db");
 
 // middlewares
-app.use(cors);
+app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended:false}));

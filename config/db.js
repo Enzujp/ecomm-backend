@@ -10,4 +10,4 @@ const db = mongoose.connect(dbURI)
 .catch((error)=> console.log(error))
 
 
-module.exports = db
+module.exports = db;
