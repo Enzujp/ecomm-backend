@@ -3,10 +3,8 @@ const router = express.Router();
 const authController = require("../controllers/authController")
 // create routes for login, signup
 
-router.get("/login", authController.login_get);
 router.post("/login", authController.login_post);
-router.get("/signup", authController.signup_get);
 router.post("/signup", authController.signup_post);
-
+// router.delete("/:userId", chcekAuth, authController.delete_user);
 
 module.exports = router;
