@@ -1,4 +1,7 @@
 const mongoose = require("mongoose")
+const PORT = process.env.PORT || 3000
+const express = require("express")
+const app = express(); // move the port to the app page to prevent repitition
 require("dotenv").config()
 
 const dbURI = process.env.DBURI

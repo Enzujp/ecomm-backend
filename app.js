@@ -3,9 +3,8 @@ const app = express();
 const cors = require("cors")
 const morgan = require("morgan")
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
 const authRoutes = require("./src/routes/authRoutes");
-const PORT = process.env.PORT || 3000
+// const PORT = process.env.PORT || 3000
 
 // necessary configs
 require("dotenv").config;
