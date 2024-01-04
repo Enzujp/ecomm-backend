@@ -4,9 +4,12 @@ const cors = require("cors")
 const morgan = require("morgan")
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const authRoutes = require("./src/routes/authRoutes");
 const PORT = process.env.PORT || 3000
-require("dotenv").config
 
+// necessary configs
+require("dotenv").config;
+require("./config/db");
 
 // middlewares
 app.use(cors);
@@ -17,11 +20,10 @@ app.use(bodyParser.json());
 
 // database connection 
 
-const dbURI = "mongodb+srv://babyenzu:mebaby@cluster0.84cfun3.mongodb.net/"
-mongoose.connect(dbURI)
-.then(() => app.listen(PORT), console.log(`Connected to the database at port ${PORT}`))
-.catch((error)=> console.log(error))
 
+
+// routes to use
+app.use("/user", authRoutes)
 
 // test port
 app.get('/', (req, res) => {
