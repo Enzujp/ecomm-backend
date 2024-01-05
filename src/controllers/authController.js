@@ -56,6 +56,7 @@ module.exports.login_post = async (req, res) => {
       } else {
         const auth = await bcrypt.compare(password, user.password);
         if (auth) {
+          const token = createToken(user._id)
           res.status(200).json({
             success: true,
             message: "User successfully logged in",
