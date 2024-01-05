@@ -5,6 +5,11 @@ const jwt = require("jsonwebtoken");
 const {User} = require("../models/User");
 require("dotenv").config()
 
+// userToken
+const createToken = (id) => {
+  return jwt.sign({ id }, process.env.SECRET_KEY, {expiresIn: "1h"})
+}
+
 module.exports.signup_post = async (req, res,) => {
   try {
     const {username, password} = req.body
@@ -15,15 +20,19 @@ module.exports.signup_post = async (req, res,) => {
       })
     } else {
       const hashedPassword = await bcrypt.hash(password, 10)
+           
       const user = new User({
         _id: new mongoose.Types.ObjectId(),
         username: username,
         password: hashedPassword
       })
+      // create user token
+      const token = createToken(user._id)
       await user.save();
       res.status(201).json({
         message: "User created successfully",
-        user: user._id
+        user: user._id, 
+        token: token
       })
     } 
   } catch (error) {
@@ -35,35 +44,36 @@ module.exports.signup_post = async (req, res,) => {
 };
 
 
-module.exports.login_post = (req, res) => {
-    User.findOne({ username: req.body.username })
-    .exec()
-    .then(user => {
-      if (user) {
-        bcrypt.compare(req.body.password, user.password, (err, result)=> {
-          if (err) {
-            return res.status(401).json({
-              message: "Incorrect Password!"
-            })
-          }
-          if (result) {
-            const token = jwt.sign({username: user.username, userId: user._id}, process.env.SECRET_KEY, {expiresIn: "1h"})
-          }
-        });
-        return res.status(200).json({
-          message: "Authentication successful", 
-          token: token
+module.exports.login_post = async (req, res) => {
+    try {
+      const {username, password} = req.body;
+      // confirm user's existence in database
+      const user = await User.findOne({ username: username })
+      if (!user) {
+        res.status(404).json({
+          message: "Error, This User doesnt exist!"
         })
+      } else {
+        const auth = await bcrypt.compare(password, user.password);
+        if (auth) {
+          res.status(200).json({
+            success: true,
+            message: "User successfully logged in",
+            _token: token
+          })
+        }
+        else {
+          res.status(409).json({
+            success: false,
+            message: "Wrong Password"
+          })
+        }
       }
-      res.status(401).json({
-        message: "Authentication failed"
-      })
-    })
-    .catch(err => {
-      console.log(err)
+    } catch (error) {
+      console.log(error)
       res.status(500).json({
-        error: err.message
+        error: error.message
       })
-    })
+    }
 }
 
