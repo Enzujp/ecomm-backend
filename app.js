@@ -4,7 +4,9 @@ const cors = require("cors")
 const morgan = require("morgan")
 const bodyParser = require("body-parser");
 const authRoutes = require("./src/routes/authRoutes");
-// const PORT = process.env.PORT || 3000
+
+// port
+const PORT = process.env.PORT || 3000
 
 // necessary configs
 require("dotenv").config;
@@ -22,9 +24,16 @@ app.use(bodyParser.json());
 
 
 // routes to use
-app.use("/user", authRoutes)
+app.use("/user", authRoutes);
 
 // test port
 app.get('/', (req, res) => {
     res.send("This is me baby, I work")
+})
+
+
+// start server
+
+app.listen(PORT, ()=> {
+    console.log(`server running on port ${PORT}`    )
 })
