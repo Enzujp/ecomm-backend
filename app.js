@@ -4,6 +4,7 @@ const cors = require("cors")
 const morgan = require("morgan")
 const bodyParser = require("body-parser");
 const authRoutes = require("./src/routes/authRoutes");
+const productRoutes = require("./src/routes/productRoutes");
 
 // port
 const PORT = process.env.PORT || 3000
@@ -25,6 +26,7 @@ app.use(bodyParser.json());
 
 // routes to use
 app.use("/user", authRoutes);
+app.use("/products", productRoutes)
 
 // test port
 app.get('/', (req, res) => {

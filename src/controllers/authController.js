@@ -78,3 +78,6 @@ module.exports.login_post = async (req, res) => {
     }
 }
 
+
+
+// Add email verification, password reset and password forget controllers
