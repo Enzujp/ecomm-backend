@@ -5,6 +5,7 @@ const morgan = require("morgan")
 const bodyParser = require("body-parser");
 const authRoutes = require("./src/routes/authRoutes");
 const productRoutes = require("./src/routes/productRoutes");
+const adminRoutes = require("./src/routes/adminRoutes");
 
 // port
 const PORT = process.env.PORT || 3000
@@ -24,9 +25,10 @@ app.use(bodyParser.json());
 
 
 
-// routes to use
+// routes to handle requests
 app.use("/user", authRoutes);
-app.use("/products", productRoutes)
+app.use("/products", productRoutes);
+app.use("/admin", adminRoutes);
 
 // test port
 app.get('/', (req, res) => {

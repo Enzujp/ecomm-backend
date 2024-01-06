@@ -3,13 +3,11 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const {User} = require("../models/User");
+const { createToken } = require("../../config/token");
 require("dotenv").config()
 
-// userToken
-const createToken = (id) => {
-  return jwt.sign({ id }, process.env.SECRET_KEY, {expiresIn: "1h"})
-}
 
+// signup user
 module.exports.signup_post = async (req, res,) => {
   try {
     const {username, password} = req.body
@@ -44,6 +42,7 @@ module.exports.signup_post = async (req, res,) => {
 };
 
 
+//login user
 module.exports.login_post = async (req, res) => {
     try {
       const {username, password} = req.body;
@@ -81,4 +80,3 @@ module.exports.login_post = async (req, res) => {
 
 
 // Add email verification, password reset and password forget controllers
-module.exports = createToken;
