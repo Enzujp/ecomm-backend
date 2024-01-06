@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const adminRoutes = require("./src/routes/adminRoutes");
 const productRoutes = require("./src/routes/productRoutes");
 const authRoutes = require("./src/routes/authRoutes");
+const orderRoutes = require("./src/routes/orderRoutes");
 
 
 // port
@@ -31,6 +32,7 @@ app.use(bodyParser.json());
 app.use("/user", authRoutes);
 app.use("/products", productRoutes);
 app.use("/admin", adminRoutes);
+app.use("/order", orderRoutes);
 
 // test port
 app.get('/', (req, res) => {
