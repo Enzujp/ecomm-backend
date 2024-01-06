@@ -1,8 +1,7 @@
+const { User } = require("../models/User");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
-const {User} = require("../models/User");
 const { createToken } = require("../../config/token");
 require("dotenv").config()
 
@@ -77,6 +76,23 @@ module.exports.login_post = async (req, res) => {
     }
 }
 
-
+module.exports.delete_user = async (req, res) => {
+  try {
+    const id = req.params.userId;
+    const user = await User.remove({ _id: id })
+    .exec()
+    if (user) {
+      res.status(200).json({
+        success: true,
+        message: "User deleted successfully"
+      })
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      error: error.message
+    })
+  }
+}
 
 // Add email verification, password reset and password forget controllers

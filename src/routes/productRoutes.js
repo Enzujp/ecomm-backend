@@ -32,11 +32,11 @@ const upload = multer({
 })
 
 
-router.get("/products", productController.get_products)
-router.get("products/:productId", productController.get_product_by_id)
-router.post("/products", productController.create_product)
-router.patch("/products/:productId", productController.update_product)
-router.delete("/products/:productId", productController.delete_product)
+router.get("/", productController.get_products)
+router.get("/:productId", productController.get_product_by_id)
+router.post("/", productController.create_product)
+router.patch("/:productId", productController.update_product)
+// router.delete("/products/:productId", productController.delete_product)
 
 
 // rewrite routes in more optimized manner

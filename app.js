@@ -3,9 +3,11 @@ const app = express();
 const cors = require("cors")
 const morgan = require("morgan")
 const bodyParser = require("body-parser");
-const authRoutes = require("./src/routes/authRoutes");
-const productRoutes = require("./src/routes/productRoutes");
+
 const adminRoutes = require("./src/routes/adminRoutes");
+const productRoutes = require("./src/routes/productRoutes");
+const authRoutes = require("./src/routes/authRoutes");
+
 
 // port
 const PORT = process.env.PORT || 3000
@@ -39,5 +41,5 @@ app.get('/', (req, res) => {
 // start server
 
 app.listen(PORT, ()=> {
-    console.log(`server running on port ${PORT}`    )
+    console.log(`server running on port ${PORT}`)
 })

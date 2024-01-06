@@ -38,7 +38,7 @@ router.post("/login", adminController.admin_login);
 
 const dashboardRoutes = express.Router();
 
-router.use("/dashboard", dashboardRoutes)
+router.use("/dashboard", dashboardRoutes);
 
 // for admin
 
