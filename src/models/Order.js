@@ -22,7 +22,7 @@ const OrderSchema = new mongoose.Schema({
         type: String,
         required: true
     }
-})
+}) // link model to Product
 
 
 
