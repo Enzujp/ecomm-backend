@@ -79,7 +79,7 @@ module.exports.login_post = async (req, res) => {
 module.exports.delete_user = async (req, res) => {
   try {
     const id = req.params.userId;
-    const user = await User.remove({ _id: id })
+    const user = await User.deleteOne({ _id: id })
     .exec()
     if (user) {
       res.status(200).json({

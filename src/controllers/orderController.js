@@ -82,7 +82,7 @@ module.exports.get_order_by_id = async (req, res) => {
 module.exports.delete_order = async (req, res) => {
   try {
     const id = req.params.orderId;
-    const removedOrder = await Order.remove({_id: id})
+    const removedOrder = await Order.deleteOne({_id: id})
     .exec()
     if (removedOrder) {
       res.status(200).json({

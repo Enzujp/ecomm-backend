@@ -123,7 +123,7 @@ module.exports.update_product = async (req, res) => {
 module.exports.delete_product = async (req, res) => {
     try {
         const id = req.params.productId
-        const product = await Product.remove( {_id:id })
+        const product = await Product.deleteOne( {_id:id })
         .exec()
         if (product) {
             res.status(200).json({

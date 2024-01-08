@@ -73,7 +73,7 @@ module.exports.admin_login = async (req, res) => {
 module.exports.delete_admin = async (req, res) => {
   try {
     const id = req.params.adminId;
-    const admin = await Admin.remove({_id: id})
+    const admin = await Admin.deleteOne({_id: id})
     .exec()
     if (admin) {
         res.status(200).json({
