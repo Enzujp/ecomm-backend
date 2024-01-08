@@ -3,7 +3,13 @@ const app = express();
 const cors = require("cors")
 const morgan = require("morgan")
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose")
+const session = require("express-session");
+const MongoStore = require("connect-mongo"); // helps handle sessions
+const connectDB  = require("./config/db");
 
+
+// routes
 const adminRoutes = require("./src/routes/adminRoutes");
 const productRoutes = require("./src/routes/productRoutes");
 const authRoutes = require("./src/routes/authRoutes");
@@ -15,7 +21,8 @@ const PORT = process.env.PORT || 3000
 
 // necessary configs
 require("dotenv").config;
-require("./config/db");
+connectDB();
+
 
 // middlewares
 app.use(cors());
@@ -23,8 +30,33 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        store: MongoStore.create({
+            mongoUrl: process.env.DBURI
+        }),
+        // set session expiry using cookies
+        cookie: { maxAge: 60 * 1000 * 60 * 3 },
+    })
+)
 
-// database connection 
+// global variables accross routes
+app.use(async(req, res, next) => {
+    try {
+        res.locals.session = req.session;
+        res.locals.currentUser = req.user;
+    next();   
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            message: error.message
+        })
+        res.redirect("/") // this might give an error
+    }
+})
 
 
 
