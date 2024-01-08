@@ -68,7 +68,7 @@ module.exports.get_order_by_id = async (req, res) => {
         .exec()
         if (order) {
             res.status(200).json({
-                order: order // expand on thisi
+                order: order // expand on this
             })
         }
         
@@ -77,4 +77,21 @@ module.exports.get_order_by_id = async (req, res) => {
             error: error.message
         })
     }
+}
+
+module.exports.delete_order = async (req, res) => {
+  try {
+    const id = req.params.orderId;
+    const removedOrder = await Order.remove({_id: id})
+    .exec()
+    if (removedOrder) {
+      res.status(200).json({
+        message: "Successfully deleted this order."
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    })
+  }
 }
