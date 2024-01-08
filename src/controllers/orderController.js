@@ -2,9 +2,11 @@ const mongoose = require("mongoose");
 const { Order } = require("../models/Order");
 const { Product } = require("../models/Product");
 
+
 module.exports.get_all_orders = async (req, res) => {
   try {
     const orders = await Order.find()
+      .sort("-createdAt")
       .select("product quantity _id")
       .populate("product name")
       .exec();
@@ -60,6 +62,7 @@ module.exports.create_new_order = async (req, res) => {
     }
 }
 
+
 module.exports.get_order_by_id = async (req, res) => {
     try {
         const id = req.params.orderId;
@@ -78,6 +81,7 @@ module.exports.get_order_by_id = async (req, res) => {
         })
     }
 }
+
 
 module.exports.delete_order = async (req, res) => {
   try {

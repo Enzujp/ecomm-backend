@@ -101,7 +101,7 @@ module.exports.get_product_by_id = async (req, res) => {
 // update product using product ID
 module.exports.update_product = async (req, res) => {
     const id = req.params.productId;
-    const updateOps = {}
+    const updateOps = {};
     for (const ops of req.body) {
         updateOps[ops.propName] = ops.value
     }

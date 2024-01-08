@@ -1,7 +1,7 @@
 const { Cart } = require("../models/cart");
 const { Product } = require("../models/Product");
 const { Order } = require("../models/Order");
-const checkAuth = require("../middleware/checkAuth");
+
 
 module.exports.get_add_to_cart = async(req, res) => {
     const productId = req.params.id;
@@ -12,11 +12,11 @@ module.exports.get_add_to_cart = async(req, res) => {
         }
         let cart;
         if (
-            (req.user && !user_cart && req.session.cart) ||
+            (req.user && !userCart && req.session.cart) ||
             (!req.user && req.session.cart)
         ) {
             cart = await new Cart(req.session.cart);
-        } else if (!req.user || !user_cart) {
+        } else if (!req.user || !userCart) {
             cart = new Cart({});
         } else {
             cart = userCart;
@@ -197,7 +197,6 @@ async function productsFromCart(cart) {
         foundProduct["totalPrice"] = item.price;
         products.push(foundProduct);
     }
-
     return products;
 }
 
