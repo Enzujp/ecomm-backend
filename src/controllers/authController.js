@@ -9,7 +9,7 @@ require("dotenv").config()
 // signup user
 module.exports.signup_post = async (req, res,) => {
   try {
-    const {username, password} = req.body
+    const {username, email, password} = req.body
     const user = await User.findOne({ username: username })
     if (user) {
       res.status(409).json({
@@ -21,6 +21,7 @@ module.exports.signup_post = async (req, res,) => {
       const user = new User({
         _id: new mongoose.Types.ObjectId(),
         username: username,
+        email: email,
         password: hashedPassword
       })
       // create user token

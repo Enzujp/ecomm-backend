@@ -1,11 +1,13 @@
 const mongoose = require("mongoose")
+const { isEmail } = require("validator")
 
 const UserSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     email: {
         type: String,
-        required: true,
-        unique: true
+        required: [true, "Please enter an email"],
+        unique: true,
+        validate: [isEmail, "Please enter a valid email"]
     },
     username: {
         type: String,
