@@ -6,8 +6,38 @@ const OrderSchema = new mongoose.Schema({
         ref: "User",
     },
     cart: {
-        type: Object,
-        required: true
+        totalqty: {
+            type: Number,
+            default: 0,
+            required: true
+        },
+        totalCost: {
+            type: Number,
+            default: 0,
+            required: true
+        },
+        items: [
+            {
+                productId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "Product",
+                },
+                qty: {
+                    type: Number,
+                    default: 0
+                },
+                price: {
+                    type: Number,
+                    default: 0
+                },
+                name: {
+                    type: String,
+                },
+                productCode: {
+                    type: String
+                }
+            }
+        ]
     },
     address: {
         type: String,
@@ -20,6 +50,10 @@ const OrderSchema = new mongoose.Schema({
     paymentId: {
         type: String,
         required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     }
 }) // link model to Product
 
