@@ -2,12 +2,14 @@ const express = require("express");
 const router = express.Router();
 
 const authController = require("../controllers/authController")
-// create routes for login, signup
+
 
 //Auth routes
 router.post('/login', authController.signup_post);
 
 router.post('/signup', authController.login_post);
 
-router.delete("/:userId", authController.delete_user)
+router.delete("/:userId", authController.delete_user);
+
+
 module.exports = router;
