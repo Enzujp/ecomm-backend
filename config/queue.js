@@ -42,3 +42,6 @@ EmailQueue.process(async (job, done) => {
         })
     }
 })
+
+
+module.exports = EmailQueue;
