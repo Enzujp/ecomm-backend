@@ -1,7 +1,7 @@
 const { User } = require("../models/User");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const { emailQueue } = require("../../config/queue")
+const  emailQueue  = require("../../config/queue")
 
 const { createToken } = require("../../config/token");
 require("dotenv").config()
@@ -29,7 +29,7 @@ module.exports.signup_post = async (req, res,) => {
       
       // Send mail on signup
       const link = process.env.NODE_ENV === 'production' ? '' : "http://localhost:3000";
-      const emailToken = createToken(email);
+      const emailToken = createToken(user.email);
       const html = `<h4>Please help verify this email<h4><p>${link}/auth/email/verify/${emailToken}<p>` // email verification link
       emailQueue.add({email, html});
 

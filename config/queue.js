@@ -36,10 +36,6 @@ EmailQueue.process(async (job, done) => {
 
     } catch (error) {
         done(error);
-        res.status(500).json({
-            message: "Error occured while sending mail",
-            error: error.message
-        })
     }
 })
 
