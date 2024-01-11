@@ -5,9 +5,11 @@ const authController = require("../controllers/authController")
 
 
 //Auth routes
-router.post('/login', authController.signup_post);
+router.post('/signup', authController.signup_post);
 
-router.post('/signup', authController.login_post);
+router.get('/email/verify/:token', authController.post_verify_email);
+
+router.post('/login', authController.login_post);
 
 router.delete("/:userId", authController.delete_user);
 

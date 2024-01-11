@@ -25,20 +25,24 @@ module.exports.signup_post = async (req, res,) => {
         email: email,
         password: hashedPassword
       })
+
+      
+      // Send mail on signup
+      const link = process.env.NODE_ENV === 'production' ? '' : "http://localhost:3000";
+      const emailToken = createToken(email);
+      const html = `<h4>Please help verify this email<h4><p>${link}/auth/email/verify/${emailToken}<p>` // email verification link
+      emailQueue.add({email, html});
+
       // create user token
       const token = createToken(user._id)
       await user.save();
       res.status(201).json({
-        message: "User created successfully",
+        success: true,
+        message: "User created successfully, Verification email sent",
         user: user._id, 
         token: token
       })
 
-      // Send mail on signup
-      const link = process.env.NODE_ENV === 'production' ? '' : "http://localhost:3000";
-      const emailToken = createToken(email);
-      const html = `<h4>Please help verify this email<h4><p>${link}/auth/email/verify/${emailToken}<p>`
-      emailQueue.add({email, html})
     } 
   } catch (error) {
     console.log(error)
@@ -85,6 +89,21 @@ module.exports.login_post = async (req, res) => {
     }
 }
 
+module.exports.post_verify_email = async(req, res) =>{
+  try {
+    
+  } catch (error) {
+    res.status(500).json({
+      message: error.message // check this and the other email verification
+    })
+  }
+}
+
+
+module.exports.password_reset = async (req, res) => {
+
+}
+
 module.exports.delete_user = async (req, res) => {
   try {
     const id = req.params.userId;
@@ -102,6 +121,6 @@ module.exports.delete_user = async (req, res) => {
       error: error.message
     })
   }
-}
+};
 
-// Add email verification, password reset and password forget controllers
+// Add password reset and password forget controllers
