@@ -33,8 +33,8 @@ module.exports.get_all_orders = async (req, res) => {
 module.exports.create_new_order = async (req, res) => {
     try {
         // first check to see that product exists
-        const { id, quantity, productId } = req.body;
-        const product = await Product.findById({_id: id})
+        const { quantity, productId } = req.body;
+        const product = await Product.findById({_id: productId})
         if (!product) {
             res.status(400).json({
                 error: error.message,
@@ -48,7 +48,7 @@ module.exports.create_new_order = async (req, res) => {
             });
             return await order.save()
         }
-        if (order) {
+        if (Order) {
             res.status(201).json({
                 message: "Order created successfully!",
                 success: true

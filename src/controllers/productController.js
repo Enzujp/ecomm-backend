@@ -100,20 +100,38 @@ module.exports.get_product_by_id = async (req, res) => {
 
 // update product using product ID
 module.exports.update_product = async (req, res) => {
-    const id = req.params.productId;
-    const updateOps = {};
-    for (const ops of req.body) {
-        updateOps[ops.propName] = ops.value
-    }
-    const product = await Product.update({ id: id }, { $set: updateOps })
-    .exec()
-    if (product) {
-        res.status(201).json({
-            message: "Product updated successfully",
-            name: product.name,
-            price: product.price,
-            _id: product._id,
-            productImage: product.productImage
+    try {
+        const id = req.params.productId
+        // check to see if product exists in database
+        const product = await Product.findNyId({ _id:id })
+        if (product) {
+            const updatedOps = {}
+            for (ops in req.body) {
+                updatedOps[ops.propName] = ops.value
+            }
+            const updatedProduct = await Product.update({_id: id}, { $set: updatedOps })
+            await updatedProduct.save();
+            res.status(201).json({
+                message: "Product updated successfully",
+                name: product.name,
+                price: product.price,
+                _id: product._id,
+                productImage: product.productImage
+            })
+        }
+        else {
+            res.status(404).json({
+                message: "This product doesmt exist",
+                error: error.message
+            })
+        }
+
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Couldnt update this product, try again",
+            error: error.message
         })
     }
 }
