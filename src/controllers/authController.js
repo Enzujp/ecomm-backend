@@ -2,6 +2,7 @@ const { User } = require("../models/User");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const  emailQueue  = require("../../config/queue")
+const client = require("../../config/redis");
 
 const { createToken } = require("../../config/token");
 require("dotenv").config()
@@ -26,6 +27,13 @@ module.exports.signup_post = async (req, res,) => {
         password: hashedPassword
       })
 
+      // create user token
+      const token = createToken(user._id)
+      const newUser = await user.save();
+
+      if (client) {
+        client.set(`${user.id.toHexString()}`, JSON.stringify(newUser))
+      }
       
       // Send mail on signup
       const link = process.env.NODE_ENV === 'production' ? '' : "http://localhost:3000";
@@ -33,14 +41,12 @@ module.exports.signup_post = async (req, res,) => {
       const html = `<h4>Please help verify this email<h4><p>${link}/auth/email/verify/${emailToken}<p>` // email verification link
       emailQueue.add({email, html});
 
-      // create user token
-      const token = createToken(user._id)
-      await user.save();
       res.status(201).json({
         success: true,
         message: "User created successfully, Verification email sent",
         user: user._id, 
-        token: token
+        token: token,
+        emailToken: emailToken
       })
 
     } 
