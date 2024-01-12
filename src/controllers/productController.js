@@ -62,7 +62,7 @@ module.exports.create_product = async (req, res) => {
             {
                 error: error.message
             }
-        )
+        );
     }
 }
 
@@ -81,19 +81,19 @@ module.exports.get_product_by_id = async (req, res) => {
                 price: product.price,
                 productImage: product.productImage,
                 _id: product._id
-            })
+            });
         }
         else {
             res.status(404).json({
                 message: "Could not find any products matching that id"
-            })
+            });
         }
 
     } catch (error) {
         console.log(error)
         res.status(500).json({
             error: error.message
-        })
+        });
     }
 }
 
@@ -101,15 +101,15 @@ module.exports.get_product_by_id = async (req, res) => {
 // update product using product ID
 module.exports.update_product = async (req, res) => {
     try {
-        const id = req.params.productId
+        const id = req.params.productId;
         // check to see if product exists in database
-        const product = await Product.findNyId({ _id:id })
+        const product = await Product.findNyId({ _id:id });
         if (product) {
             const updatedOps = {}
             for (ops in req.body) {
                 updatedOps[ops.propName] = ops.value
             }
-            const updatedProduct = await Product.update({_id: id}, { $set: updatedOps })
+            const updatedProduct = await Product.update({_id: id}, { $set: updatedOps });
             await updatedProduct.save();
             res.status(201).json({
                 message: "Product updated successfully",
@@ -117,13 +117,13 @@ module.exports.update_product = async (req, res) => {
                 price: product.price,
                 _id: product._id,
                 productImage: product.productImage
-            })
+            });
         }
         else {
             res.status(404).json({
                 message: "This product doesmt exist",
                 error: error.message
-            })
+            });
         }
 
 
@@ -132,7 +132,7 @@ module.exports.update_product = async (req, res) => {
         res.status(500).json({
             message: "Couldnt update this product, try again",
             error: error.message
-        })
+        });
     }
 }
 
@@ -140,7 +140,7 @@ module.exports.update_product = async (req, res) => {
 
 module.exports.delete_product = async (req, res) => {
     try {
-        const id = req.params.productId
+        const id = req.params.productId; 
         const product = await Product.deleteOne( {_id:id })
         .exec()
         if (product) {
@@ -153,9 +153,9 @@ module.exports.delete_product = async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error)
+        console.log(error);
         res.status(500).json({
             error: error.message
-        })
+        });
     }
 }
