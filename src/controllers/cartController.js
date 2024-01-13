@@ -2,6 +2,19 @@ const { Cart } = require("../models/cart");
 const { Product } = require("../models/Product");
 const { Order } = require("../models/Order");
 
+// returns products in user's cart
+async function productsFromCart(cart) {
+    let products = [];
+    for (const item of cart.item) {
+        const foundProduct = (await Product.findById(item.productId)).toObject();
+        foundProduct["qty"] = item.qty;
+        foundProduct["totalPrice"] = item.price;
+        products.push(foundProduct);
+    }
+    return products;
+}
+
+
 
 module.exports.get_add_to_cart = async(req, res) => {
     const productId = req.params.id;
@@ -77,7 +90,7 @@ module.exports.get_shopping_cart = async (req, res) => {
             res.status(200).json({
                 message: "Here's your cart",
                 cart: cartUser,
-                products: await productsFromCart(req.session.cart)
+                products: await productsFromCart(req.session.cart),
             });
         }
         // check for active cart in session and if user is not logged in, empty cart
@@ -186,18 +199,6 @@ module.exports.get_remove_all = async (req, res) => {
             error: error.message
         })
     }
-}
-
-
-async function productsFromCart(cart) {
-    let products = [];
-    for (const item of cart.item) {
-        const foundProduct = (await Product.findById(item.productId)).toObject();
-        foundProduct["qty"] = item.qty;
-        foundProduct["totalPrice"] = item.price;
-        products.push(foundProduct);
-    }
-    return products;
 }
 
 
