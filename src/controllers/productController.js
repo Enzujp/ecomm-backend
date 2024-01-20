@@ -103,7 +103,7 @@ module.exports.update_product = async (req, res) => {
     try {
         const id = req.params.productId;
         // check to see if product exists in database
-        const product = await Product.findNyId({ _id:id });
+        const product = await Product.findById({ _id:id });
         if (product) {
             const updatedOps = {}
             for (ops in req.body) {
