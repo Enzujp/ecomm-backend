@@ -102,14 +102,11 @@ module.exports.get_product_by_id = async (req, res) => {
 module.exports.update_product = async (req, res) => {
     try {
         const id = req.params.productId;
+        const payload = req.body;
         // check to see if product exists in database
         const product = await Product.findById({ _id:id });
         if (product) {
-            const updatedOps = {}
-            for (ops in req.body) {
-                updatedOps[ops.propName] = ops.value
-            }
-            const updatedProduct = await Product.update({_id: id}, { $set: updatedOps });
+            const updatedProduct = await Product.findByIdAndUpdate({_id: id}, payload, { new: true});
             await updatedProduct.save();
             res.status(201).json({
                 message: "Product updated successfully",
@@ -117,8 +114,9 @@ module.exports.update_product = async (req, res) => {
                 price: product.price,
                 _id: product._id,
                 productImage: product.productImage
-            });
+            })
         }
+            
         else {
             res.status(404).json({
                 message: "This product doesmt exist",
