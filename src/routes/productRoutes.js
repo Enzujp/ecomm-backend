@@ -9,13 +9,12 @@ const storage = multer.diskStorage({
         cb(null, './uploads'); // setting file destination to uploads folder
     },
     filename: function(req, file, cb) {
-        cb(null, new Date().toISOString() + file.originalname); // returns filename and date of creation
+        cb(null, new Date().toISOString() + file.originalname); 
     }
 })
 
-// set fileFilter to determine what file time comes in
+
 const fileFilter = (req, file, cb) => {
-    // reject a file
     if (file.mimetype === 'image/jpg' || file.mimetype === "image/png") {
         cb(null, true); // allow images of formats jpg or png only
     } else {
@@ -23,7 +22,7 @@ const fileFilter = (req, file, cb) => {
     }
 }
 
-// upload criteria
+
 const upload = multer({
     storage: storage,
     limits: {

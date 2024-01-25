@@ -114,7 +114,7 @@ module.exports.update_product = async (req, res) => {
                 price: product.price,
                 _id: product._id,
                 productImage: product.productImage
-            })
+            });
         }
             
         else {
